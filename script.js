@@ -1,4 +1,4 @@
-var tasks = ["", "", "", "", "", "", "", "", ""];
+var tasks = [];
 
 //get current time
 var getTime = function() {
