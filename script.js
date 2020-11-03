@@ -1,10 +1,11 @@
-var tasks = [];
+var tasks = ["", "", "", "", "", "", "", "", ""];
 
 //get current time
 var getTime = function() {
     var now = moment();
     displayDate(now);
     compareTime(now);
+    setTimeout(getTime, 900000);
 };
 
 //current day display
@@ -46,7 +47,7 @@ $(".task-slot").on("click", "p", function() {
 //finish editing
 $(".saveBtn").on("click", function() {
     var taskEl = $(this).siblings(".task-slot").children();
-
+    var containerEl = $(this).siblings(".task-slot")
     if (taskEl.hasClass("input")) {
         var text = $(taskEl)
             .val()
@@ -55,11 +56,34 @@ $(".saveBtn").on("click", function() {
             .addClass("task")
             .text(text);
         $(taskEl).replaceWith(taskP);
+        saveTasks(text, containerEl);
     }
     else {
         return;
     }
 });
 
-getTime();
+var saveTasks = function(taskText, timeSlot) {
+    var id = timeSlot.attr("id");
+    var arrayLocale = id - 9;
+    tasks[arrayLocale] = taskText;
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+};
 
+var loadTasks = function() {
+    tasks = JSON.parse(localStorage.getItem("tasks"));
+    if (!tasks) {
+        tasks = ["", "", "", "", "", "", "", "", ""]
+    }
+    else {
+        for (var i = 0; i < tasks.length; i++) {
+            var id = i + 9;
+            var containerEl = $("#" + id);
+            var text = tasks[i];
+            $(containerEl).children().text(text);
+        };
+    }
+};
+
+getTime();
+loadTasks();
