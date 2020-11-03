@@ -29,6 +29,37 @@ var compareTime = function(currentTime) {
             $(slotEl).addClass("past")
         }
     };
-}
+};
+
+//click to edit task slot
+$(".task-slot").on("click", "p", function() {
+    var text = $(this)
+        .text()
+        .trim();
+    var textInput = $("<textarea>")
+        .addClass("task input")
+        .val(text);
+    $(this).replaceWith(textInput);
+    textInput.trigger("focus");
+});
+
+//finish editing
+$(".saveBtn").on("click", function() {
+    var taskEl = $(this).siblings(".task-slot").children();
+
+    if (taskEl.hasClass("input")) {
+        var text = $(taskEl)
+            .val()
+            .trim();
+        var taskP = $("<p>")
+            .addClass("task")
+            .text(text);
+        $(taskEl).replaceWith(taskP);
+    }
+    else {
+        return;
+    }
+});
 
 getTime();
+
